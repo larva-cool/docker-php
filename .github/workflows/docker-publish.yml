@@ -39,7 +39,7 @@ jobs:
                     cosign-release: 'v1.4.0'
 
             -   name: Setup Docker buildx
-                uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb
+                uses: docker/setup-buildx-action@4fd812986e6c8c2a69e18311145f9371337f27d4
 
             -   name: Log into registry ${{ env.REGISTRY }}
                 uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20
@@ -80,7 +80,7 @@ jobs:
                     cosign-release: 'v1.4.0'
 
             -   name: Setup Docker buildx
-                uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb
+                uses: docker/setup-buildx-action@4fd812986e6c8c2a69e18311145f9371337f27d4
 
             -   name: Log into registry ${{ env.REGISTRY }}
                 uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20
@@ -121,7 +121,7 @@ jobs:
                     cosign-release: 'v1.4.0'
 
             -   name: Setup Docker buildx
-                uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb
+                uses: docker/setup-buildx-action@4fd812986e6c8c2a69e18311145f9371337f27d4
 
             -   name: Log into registry ${{ env.REGISTRY }}
                 uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20
@@ -162,7 +162,7 @@ jobs:
                     cosign-release: 'v1.4.0'
 
             -   name: Setup Docker buildx
-                uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb
+                uses: docker/setup-buildx-action@4fd812986e6c8c2a69e18311145f9371337f27d4
 
             -   name: Log into registry ${{ env.REGISTRY }}
                 uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20
@@ -203,7 +203,7 @@ jobs:
                     cosign-release: 'v1.4.0'
 
             -   name: Setup Docker buildx
-                uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb
+                uses: docker/setup-buildx-action@4fd812986e6c8c2a69e18311145f9371337f27d4
 
             -   name: Log into registry ${{ env.REGISTRY }}
                 uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20
