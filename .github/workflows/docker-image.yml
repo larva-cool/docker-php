@@ -13,7 +13,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v6
             -   name: Build the Docker image
                 run: cd 7.4 && docker build . --file Dockerfile --tag php74:$(date +%s)
 
@@ -22,7 +22,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v6
             -   name: Build the Docker image
                 run: cd 8.0 && docker build . --file Dockerfile --tag php80:$(date +%s)
 
@@ -31,7 +31,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v6
             -   name: Build the Docker image
                 run: cd 8.1 && docker build . --file Dockerfile --tag php81:$(date +%s)
 
@@ -40,7 +40,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v6
             -   name: Build the Docker image
                 run: cd 8.2 && docker build . --file Dockerfile --tag php82:$(date +%s)
 
@@ -49,6 +49,6 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v6
             -   name: Build the Docker image
                 run: cd 8.3 && docker build . --file Dockerfile --tag php83:$(date +%s)
