@@ -31,7 +31,7 @@ jobs:
 
         steps:
             -   name: Checkout repository
-                uses: actions/checkout@v4
+                uses: actions/checkout@v6
 
             -   name: Install cosign
                 uses: sigstore/cosign-installer@4959ce089c160fddf62f7b42464195ba1a56d382
@@ -72,7 +72,7 @@ jobs:
 
         steps:
             -   name: Checkout repository
-                uses: actions/checkout@v4
+                uses: actions/checkout@v6
 
             -   name: Install cosign
                 uses: sigstore/cosign-installer@4959ce089c160fddf62f7b42464195ba1a56d382
@@ -113,7 +113,7 @@ jobs:
 
         steps:
             -   name: Checkout repository
-                uses: actions/checkout@v4
+                uses: actions/checkout@v6
 
             -   name: Install cosign
                 uses: sigstore/cosign-installer@4959ce089c160fddf62f7b42464195ba1a56d382
@@ -154,7 +154,7 @@ jobs:
 
         steps:
             -   name: Checkout repository
-                uses: actions/checkout@v4
+                uses: actions/checkout@v6
 
             -   name: Install cosign
                 uses: sigstore/cosign-installer@4959ce089c160fddf62f7b42464195ba1a56d382
@@ -195,7 +195,7 @@ jobs:
 
         steps:
             -   name: Checkout repository
-                uses: actions/checkout@v4
+                uses: actions/checkout@v6
 
             -   name: Install cosign
                 uses: sigstore/cosign-installer@4959ce089c160fddf62f7b42464195ba1a56d382
