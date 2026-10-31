@@ -18,8 +18,8 @@ on:
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  # Image name as <account>/php
+  IMAGE_NAME: ${{ github.repository_owner }}/php
 
 
 jobs:
