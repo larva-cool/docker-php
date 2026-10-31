@@ -14,11 +14,11 @@ NC='\033[0m' # No Color
 DOCKER_REPO="php"
 BUILD_PARALLEL=false
 PHP_VERSIONS=(
-  "8.0"
-  "8.0-fpm"
-  "8.1"
-  "8.1-fpm"
-  "8.1-alpine"
+#  "8.0"
+#  "8.0-fpm"
+#  "8.1"
+#  "8.1-fpm"
+#  "8.1-alpine"
   "8.2"
   "8.2-fpm"
   "8.2-alpine"
