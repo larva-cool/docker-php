@@ -5,7 +5,6 @@ LABEL maintainer="Tongle Xu <xutongle@msn.com>" version="1.0" license="MIT"
 WORKDIR /app
 
 RUN set -ex \
-    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
     && apk update \
     && apk add --no-cache \
     # Install base packages ('ca-certificates' will install 'nghttp2-libs')
