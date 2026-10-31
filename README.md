@@ -2,35 +2,35 @@
 
 ## 项目概述
 
-这个项目提供了多个 PHP 版本的标准化 Docker 开发环境，旨在为 PHP 应用开发和部署提供一致、高效的容器化解决方案。项目支持 PHP 8.0、8.1、8.2、8.3 和 8.4 版本，所有版本均基于 Ubuntu 24.04 构建，并包含完整的 PHP 扩展套件。
+这个项目提供了多个 PHP 版本的标准化 Docker 开发环境，旨在为 PHP 应用开发和部署提供一致、高效的容器化解决方案。项目支持 PHP 8.0、8.1、8.2、8.3、8.4 和 8.5，并提供标准版、FPM 版及 Alpine 版镜像。
 
 ## 项目结构
 
-项目采用按 PHP 版本分类的目录结构：
+项目按 PHP 版本和镜像变体组织目录：
 
-```
-├── 8.0/            # PHP 8.0 版本配置
-│   ├── Dockerfile      # Docker 构建文件
-│   └── php.ini         # PHP 配置文件
-├── 8.1/            # PHP 8.1 版本配置
-├── 8.2/            # PHP 8.2 版本配置
-├── 8.3/            # PHP 8.3 版本配置
-├── 8.4/            # PHP 8.4 版本配置
-├── 8.5/            # PHP 8.5 版本配置
-├── README.md           # 项目文档
-├── build-images.sh     # 快速构建脚本
-└── push-images.sh      # 镜像推送脚本
+```text
+├── 8.0/                  # PHP 8.0 标准版
+├── 8.0-fpm/              # PHP 8.0 FPM 版
+├── 8.1-alpine/           # PHP 8.1 Alpine 版
+├── ...                   # 其他版本和变体
+├── 8.5/                  # PHP 8.5 标准版
+├── 8.5-fpm/              # PHP 8.5 FPM 版
+├── 8.5-alpine/           # PHP 8.5 Alpine 版
+├── .github/workflows/    # GitHub Actions 构建与发布配置
+├── build-images.sh       # 镜像构建脚本
+├── push-images.sh        # 镜像推送脚本
+└── README.md             # 项目文档
 ```
 
-每个版本目录包含相同的文件结构，确保了不同 PHP 版本间的一致性和可预测性。
+每个镜像目录包含对应的 `Dockerfile` 和 PHP 配置。标准版与 FPM 版基于 Ubuntu 24.04，Alpine 版使用各目录 `Dockerfile` 中指定的 Alpine Linux 版本。
 
 ## 技术特点
 
 ### 基础环境
-- **操作系统**: Ubuntu 24.04 LTS
-- **镜像源优化**: 使用中国科学技术大学镜像源(mirrors.ustc.edu.cn)，提高国内环境下的构建速度
+- **标准版与 FPM 版**: 基于 Ubuntu 24.04 LTS
+- **Alpine 版**: 基于 Alpine Linux，具体版本以对应 `Dockerfile` 为准
+- **镜像源优化**: 使用中国科学技术大学镜像源（mirrors.ustc.edu.cn），提高国内环境下的构建速度
 - **时区设置**: 统一使用 UTC 时区
-- **APT 优化**: 配置了缓存和代理优化参数
 
 ### PHP 环境
 
@@ -73,7 +73,7 @@
 
 ## 容器管理
 
-当前版本的镜像采用简化设计，默认启动交互式 PHP Shell（php -a），适合命令行操作和脚本执行。
+标准版和 Alpine 版默认启动交互式 PHP Shell（`php -a`），适合命令行操作和脚本执行；FPM 版默认启动 `php-fpm`，用于配合 Nginx、Apache 等 Web 服务器。
 
 ### PHP 配置
 
@@ -91,11 +91,20 @@
 项目提供了 `build-images.sh` 脚本，可以快速构建所有或指定版本的镜像：
 
 ```bash
-# 构建所有版本镜像
+# 串行构建所有版本镜像，默认标签为 php:<版本>
 ./build-images.sh
 
-# 构建特定版本镜像
-./build-images.sh 8.2
+# 构建一个或多个指定版本
+./build-images.sh 8.2 8.3-fpm
+
+# 并行构建所有版本
+./build-images.sh --parallel
+
+# 指定镜像仓库，例如构建 ghcr.io/xutongle/php:8.5-fpm
+./build-images.sh --repo ghcr.io/xutongle/php 8.5-fpm
+
+# 查看完整参数说明
+./build-images.sh --help
 ```
 
 #### 手动构建
@@ -111,7 +120,7 @@ docker build -t php:8.2 .
 
 #### 基本运行
 
-默认情况下，容器启动交互式 PHP Shell：
+标准版和 Alpine 版默认启动交互式 PHP Shell。以 PHP 8.2 标准版为例：
 
 ```bash
 docker run -it --rm php:8.2
@@ -143,22 +152,23 @@ docker run -it --rm -p 8000:8000 -v $(pwd):/app php:8.2 php -S 0.0.0.0:8000
 
 1. **工作目录**: 应用代码建议挂载到 `/app` 目录
 2. **扩展说明**: 本镜像不包含 Xdebug 和 PCOV 等代码覆盖率工具，如需这些功能，请自行扩展 Dockerfile
-3. **交互式模式**: 镜像默认以交互式 PHP Shell 运行，适合命令行操作
+3. **默认命令**: 标准版和 Alpine 版默认运行交互式 PHP Shell；FPM 版默认运行 `php-fpm`
 
-## 版本兼容性
+## 镜像版本
 
-| PHP 版本 | 最低 Ubuntu 版本 | 扩展完整性 |
-|----------|----------------|------------|
-| 8.0      | 24.04          | 完整支持   |
-| 8.1      | 24.04          | 完整支持   |
-| 8.2      | 24.04          | 完整支持   |
-| 8.3      | 24.04          | 完整支持   |
-| 8.4      | 24.04          | 完整支持   |
+| PHP 版本 | 标准版标签 | FPM 版标签 | Alpine 版标签 |
+|----------|------------|------------|---------------|
+| 8.0      | `8.0`      | `8.0-fpm`  | -             |
+| 8.1      | `8.1`      | `8.1-fpm`  | `8.1-alpine`  |
+| 8.2      | `8.2`      | `8.2-fpm`  | `8.2-alpine`  |
+| 8.3      | `8.3`      | `8.3-fpm`  | `8.3-alpine`  |
+| 8.4      | `8.4`      | `8.4-fpm`  | `8.4-alpine`  |
+| 8.5      | `8.5`      | `8.5-fpm`  | `8.5-alpine`  |
 
 ## 维护信息
 
 - **维护者**: Tongle Xu
-- **基础镜像**: Ubuntu 24.04 LTS
+- **基础镜像**: Ubuntu 24.04 LTS / Alpine Linux
 - **最后更新**: 2026 年
 
 ## 扩展建议
@@ -170,27 +180,37 @@ docker run -it --rm -p 8000:8000 -v $(pwd):/app php:8.2 php -S 0.0.0.0:8000
 3. 调整 PHP 配置参数
 4. 集成 Web 服务器（如 Nginx、Apache）
 
-## 镜像推送
+## 镜像发布与推送
 
-项目提供了 `push-images.sh` 脚本，可以将构建好的镜像推送到阿里云容器镜像服务：
+### GitHub Actions 自动发布
+
+GitHub Actions 工作流调用 `build-images.sh` 构建全部镜像，发布仓库为 `ghcr.io/<仓库所有者>/php`，标签与“镜像版本”表格一致。例如，PHP 8.5 FPM 版镜像为 `ghcr.io/<仓库所有者>/php:8.5-fpm`。
+
+- **Pull Request**: 仅构建镜像，不推送、不签名。
+- **非 Pull Request 事件**: 构建全部镜像并推送到 GHCR，然后使用 cosign 对每个已发布镜像的 digest 进行签名。触发方式包括 `master` 分支推送、`v*.*.*` 标签推送和定时任务。
+
+### 手动推送
+
+`push-images.sh` 将本地 `php:<版本>` 镜像打标签后推送，并自动执行 `docker login`。默认目标仓库由环境变量 `CNB_DOCKER_REGISTRY` 和 `CNB_REPO_SLUG_LOWERCASE` 组成：
 
 ```bash
+export CNB_DOCKER_REGISTRY=registry.cn-hangzhou.aliyuncs.com
+export CNB_REPO_SLUG_LOWERCASE=xutongle/php
+
 # 推送所有版本镜像
 ./push-images.sh
 
-# 推送特定版本镜像
-./push-images.sh 8.2
-
-# 指定镜像标签
-./push-images.sh --tag latest
+# 推送一个或多个指定版本
+./push-images.sh 8.2 8.5-fpm
 ```
 
-推送前需要先登录阿里云容器镜像服务：
+也可以通过 `--registry` 指定镜像仓库地址，此时目标仓库为 `<仓库地址>/xutongle/php`：
+
 ```bash
-docker login registry.cn-hangzhou.aliyuncs.com
+./push-images.sh --registry registry.cn-hangzhou.aliyuncs.com 8.2
 ```
 
-镜像将被推送到 `registry.cn-hangzhou.aliyuncs.com/xutongle/php` 仓库。
+推送前请先使用 `build-images.sh` 构建对应的本地镜像，并准备好目标仓库的登录凭证。
 
 ## 许可证
 
