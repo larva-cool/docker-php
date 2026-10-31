@@ -102,8 +102,8 @@
 # 并行构建所有版本
 ./build-images.sh --parallel
 
-# 指定镜像仓库，例如构建 ghcr.io/xutongle/php:8.5-fpm
-./build-images.sh --repo ghcr.io/xutongle/php 8.5-fpm
+# 指定镜像仓库，例如构建 ghcr.io/larva-cool/php:8.5-fpm
+./build-images.sh --repo ghcr.io/larva-cool/php 8.5-fpm
 
 # 查看完整参数说明
 ./build-images.sh --help
@@ -199,7 +199,7 @@ GitHub Actions 工作流调用 `build-images.sh` 构建全部镜像，发布仓�
 
 ```bash
 export CNB_DOCKER_REGISTRY=registry.cn-hangzhou.aliyuncs.com
-export CNB_REPO_SLUG_LOWERCASE=xutongle/php
+export CNB_REPO_SLUG_LOWERCASE=larva-cool/php
 
 # 推送所有版本镜像
 ./push-images.sh
@@ -208,7 +208,7 @@ export CNB_REPO_SLUG_LOWERCASE=xutongle/php
 ./push-images.sh 8.2 8.5-fpm
 ```
 
-也可以通过 `--registry` 指定镜像仓库地址，此时目标仓库为 `<仓库地址>/xutongle/php`：
+也可以通过 `--registry` 指定镜像仓库地址，此时目标仓库为 `<仓库地址>/larva-cool/php`：
 
 ```bash
 ./push-images.sh --registry registry.cn-hangzhou.aliyuncs.com 8.2
