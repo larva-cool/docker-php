@@ -2,6 +2,8 @@
 
 ## 项目概述
 
+[![Docker](https://github.com/larva-cool/docker-php/actions/workflows/docker-publish.yml/badge.svg?branch=master)](https://github.com/larva-cool/docker-php/actions/workflows/docker-publish.yml)
+
 这个项目提供了多个 PHP 版本的标准化 Docker 开发环境，旨在为 PHP 应用开发和部署提供一致、高效的容器化解决方案。项目支持 PHP 8.0、8.1、8.2、8.3、8.4 和 8.5，并提供标准版、FPM 版及 Alpine 版镜像。
 
 ## 项目结构
@@ -184,7 +186,9 @@ docker run -it --rm -p 8000:8000 -v $(pwd):/app php:8.2 php -S 0.0.0.0:8000
 
 ### GitHub Actions 自动发布
 
-GitHub Actions 工作流调用 `build-images.sh` 构建全部镜像，发布仓库为 `ghcr.io/<仓库所有者>/php`，标签与“镜像版本”表格一致。例如，PHP 8.5 FPM 版镜像为 `ghcr.io/<仓库所有者>/php:8.5-fpm`。
+GitHub Actions 工作流调用 `build-images.sh` 构建全部镜像，发布仓库为 `ghcr.io/<仓库所有者>/php`，标签与“镜像版本”表格一致。例如，PHP 8.5 FPM 版镜像为 `ghcr.io/<仓库所有者>/php:8.5-fpm`。镜像名独立于 Git 仓库名。
+
+推送使用个人 PAT，请在仓库的 **Settings → Secrets and variables → Actions** 中创建名为 `GHCR_PAT` 的 Secret。Fine-grained PAT 或 Classic PAT 均需具备 `packages: write` 权限。首次推送后，如有需要，可在 GHCR 包页面手动关联 Git 仓库。
 
 - **Pull Request**: 仅构建镜像，不推送、不签名。
 - **非 Pull Request 事件**: 构建全部镜像并推送到 GHCR，然后使用 cosign 对每个已发布镜像的 digest 进行签名。触发方式包括 `master` 分支推送、`v*.*.*` 标签推送和定时任务。
